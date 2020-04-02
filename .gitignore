@@ -1,3 +1,4 @@
 /bin/
 /logs/
+*.txt
 src/Saboteur/SaboteurBoardPanel.java
