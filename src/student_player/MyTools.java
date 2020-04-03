@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Saboteur.SaboteurBoardState;
+import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
+import Saboteur.cardClasses.SaboteurCard;
 import Saboteur.cardClasses.SaboteurTile;
 import boardgame.BoardState;
 import Saboteur.SaboteurBoard;
@@ -186,4 +188,22 @@ public class MyTools {
 			}
 		}
 	}
+	
+	
+	
+	/**
+	 * method getCardsInHand()
+	 * @return ArrayList<Card> in the agent's hand
+	 */
+	public static ArrayList<SaboteurCard> getCardsInHand() {
+		ArrayList<SaboteurCard> cards = new ArrayList<SaboteurCard>();
+		//SaboteurBoardState pbs = (SaboteurBoardState) getCurrentBoard().getBoardState();
+		return cards;
+	}
+	
+	/**
+	 * method checkCardInHand()
+	 * @param SaboteurCard card 
+	 * @return boolean: true if Card in agent's hand/ false otherwise
+	 */
 }
