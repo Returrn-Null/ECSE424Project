@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import Saboteur.SaboteurBoardState;
 import Saboteur.SaboteurMove;
+import Saboteur.cardClasses.SaboteurCard;
 import Saboteur.cardClasses.SaboteurTile;
 import boardgame.BoardState;
 import Saboteur.SaboteurBoard;
@@ -14,6 +15,9 @@ public class MyTools {
 	private static final int EMPTY = -1;
 	private static SaboteurTile[][] board;
 	private static int[][] intboard;
+	private static int PrevMin1;
+	private static int PrevMin2;
+	private static int PrevMin0;
 
 	public static double getSomething() {
 		return Math.random();
@@ -29,6 +33,8 @@ public class MyTools {
 		int min0 = 80;
 		int min1 = 80;
 		int min2 = 80;
+		int mini = 80;
+		int minj = 80;
 		board = sbs.getHiddenBoard();
 		intboard = sbs.getHiddenIntBoard();
 		for(int i = 12; i>=0;i--) {
@@ -40,23 +46,34 @@ public class MyTools {
 						}
 						if(a == 0) {
 							int[] off = getOffset(targets.get(0),i,j);
-							if(min0>Math.abs(off[0])+Math.abs(off[1])) {
-								min0 = Math.abs(off[0])+Math.abs(off[1]);
+							if(min0>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+								min0 = Math.abs(off[0])+Math.abs(off[1])+off[2];
 							}	
 						}
 						if(a == 1) {
 							int[] off = getOffset(targets.get(1),i,j);
-							if(min1>Math.abs(off[0])+Math.abs(off[1])) {
-								min1 = Math.abs(off[0])+Math.abs(off[1]);
+							if(min1>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+								min1 = Math.abs(off[0])+Math.abs(off[1])+off[2];
+								mini = i;
+								minj = j;
 							}
 						}
 						if(a == 2) {
 							int[] off = getOffset(targets.get(2),i,j);
-							if(min2>Math.abs(off[0])+Math.abs(off[1])) {
-								min2 = Math.abs(off[0])+Math.abs(off[1]);
+							if(min2>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+								min2 = Math.abs(off[0])+Math.abs(off[1])+off[2];
 							}
 						}
 					}
+				}
+				if(min1>PrevMin1) {//if a destroy card was used add one to the cost
+					min1 = PrevMin1+1;
+				}
+				if(min0>PrevMin0) {
+					min0 = PrevMin0+1;
+				}
+				if(min2>PrevMin2) {
+					min2 = PrevMin2+1;
 				}
 			}
 		}
@@ -74,9 +91,23 @@ public class MyTools {
 	 * @return
 	 */
 	public static int[] getOffset(int[] target, int i, int j) {
-		int[] offsets = new int[2];
+		int[] offsets = new int[3];
 		offsets[0] = target[0]-i;
 		offsets[1] = target[1]-j;
+		int[][] path = board[i][j].getPath();
+		if(offsets[0]>0 && path[1][0] == 1 && path[1][1]==1) {
+			offsets[2] = 0;
+			return offsets;
+		}
+		if(offsets[1]>0 && path[1][1] ==1 && path[2][1] == 1) {
+			offsets[2] = 0;
+			return offsets;
+		}
+		if(offsets[1]<0 && path[1][1] == 1 && path[0][1] == 1) {
+			offsets[2] = 0;
+			return offsets;
+		}
+		offsets[2] = 1; //the third offset is to see if we need to use a destroy card or not
 		return offsets;
 	}
 
@@ -186,4 +217,40 @@ public class MyTools {
 			}
 		}
 	}
+	
+	public static void dropStrategy(SaboteurBoardState sbs) {
+		ArrayList<SaboteurCard> hand = sbs.getCurrentPlayerCards();
+		boolean map = false;
+		boolean bonus = false;
+		if(checkRevealed(sbs)>=2) {
+			map = true;
+		}
+		for(SaboteurCard ca: hand) {
+			
+		}
+		
+		
+		
+	}
+	
+	
+	
+	public static int checkRevealed(SaboteurBoardState sbs) {
+		
+		int num = 0;
+		if(board[12][5].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
+			num++;
+		}
+		if(board[12][3].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
+			num++;
+		}
+		if(board[12][7].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
+			num++;
+		}
+		return num;
+	}
+	
+	
+	
+	
 }
