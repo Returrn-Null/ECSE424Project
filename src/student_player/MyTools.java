@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Saboteur.SaboteurBoardState;
+import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
 import Saboteur.cardClasses.SaboteurCard;
 import Saboteur.cardClasses.SaboteurTile;
@@ -218,6 +219,7 @@ public class MyTools {
 		}
 	}
 	
+
 	public static void dropStrategy(SaboteurBoardState sbs) {
 		ArrayList<SaboteurCard> hand = sbs.getCurrentPlayerCards();
 		boolean map = false;
@@ -253,4 +255,29 @@ public class MyTools {
 	
 	
 	
+
+	
+	
+	/**
+	 * method getCardsInHand()
+	 * @return ArrayList<Card> in the agent's hand
+	 */
+	public static ArrayList<SaboteurCard> getCardsInHand(SaboteurBoardState boardState) {
+		//getCurrentPlayerCards() works in a way such that it will return only the hand 
+		//of the player currently playing his turn, since we will be calling it only when
+		//our agent plays, we will always get our agent's hand
+		ArrayList<SaboteurCard> cards = boardState.getCurrentPlayerCards();
+		return cards;
+	}
+	
+	/**
+	 * method checkCardInHand()
+	 * used to check if a specific card is in our hand and can therefore be played
+	 * @param SaboteurCard card 
+	 * @return boolean: true if Card in agent's hand/ false otherwise
+	 */
+	public static boolean checkCardInHand(ArrayList<SaboteurCard> cards, SaboteurCard card) {
+		return cards.contains(card);
+	}
+
 }
