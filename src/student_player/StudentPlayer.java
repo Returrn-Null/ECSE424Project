@@ -26,11 +26,39 @@ public class StudentPlayer extends SaboteurPlayer {
         // You probably will make separate functions in MyTools.
         // For example, maybe you'll need to load some pre-processed best opening
         // strategies...
-        MyTools.getSomething();
-
+    	Move myMove;
+    	
+        if(MyTools.playMalus(boardState) != null) {
+        	myMove = MyTools.playMalus(boardState);
+        }
+        
+        else if(MyTools.playBonus(boardState) != null) {
+        	myMove = MyTools.playBonus(boardState);
+        }
+        
+        else if(MyTools.preventOpponentFromWinning(boardState) != null) {
+        	myMove = MyTools.preventOpponentFromWinning(boardState);
+        }
+        
+        else if(MyTools.playMapCard(boardState) != null) {
+        	myMove = MyTools.playMapCard(boardState);
+        }
+        
+        else if(MyTools.tacticalDrop(boardState) != null) {
+        	myMove = MyTools.tacticalDrop(boardState);
+        }
+        
+        else if(MyTools.buildPath(boardState) != null) {
+        	myMove = MyTools.buildPath(boardState);
+        }
+        
+        else if(MyTools.Drop(boardState) != null) {
+        	myMove = MyTools.Drop(boardState);
+        }
+        else {
         // Is random the best you can do?
-        Move myMove = boardState.getRandomMove();
-
+        myMove = boardState.getRandomMove();
+        }
         // Return your move to be processed by the server.
         return myMove;
     }

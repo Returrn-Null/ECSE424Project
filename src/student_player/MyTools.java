@@ -9,6 +9,7 @@ import Saboteur.SaboteurMove;
 import Saboteur.cardClasses.SaboteurCard;
 import Saboteur.cardClasses.SaboteurTile;
 import boardgame.BoardState;
+import boardgame.Move;
 import Saboteur.SaboteurBoard;
 
 public class MyTools {
@@ -211,5 +212,46 @@ public class MyTools {
 	 */
 	public static boolean checkCardInHand(ArrayList<SaboteurCard> cards, SaboteurCard card) {
 		return cards.contains(card);
+	}
+	
+	/**
+	 * METHODS FOR SELECTING MOVES IN ORDER OF PRIORITY
+	 * CHECK MOVE IS LEGAL BEFORE RETURNING IT
+	 */
+	
+	public static Move playMalus(SaboteurBoardState boardState) {
+		
+		return null;
+	}
+	
+	public static Move playBonus(SaboteurBoardState boardState) {
+		
+		return null;
+	}
+	
+	public static Move preventOpponentFromWinning(SaboteurBoardState boardState) {
+		//if at one card away from an objective but our agent does not have the required path card
+		//either destroy the card making the path or put a card that closes off the path
+		return null;
+	}
+	
+	public static Move playMapCard(SaboteurBoardState boardState) {
+		
+		return null;
+	}
+	
+	public static Move tacticalDrop(SaboteurBoardState boardState) {
+		//if 2 cards away from an objective drop instead of putting a path card
+		return null;
+	}
+	
+	public static Move buildPath(SaboteurBoardState boardState) {
+		
+		return null;
+	}
+	
+	public static Move Drop(SaboteurBoardState boardState) {
+		
+		return null;
 	}
 }
