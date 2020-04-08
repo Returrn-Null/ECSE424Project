@@ -6,7 +6,9 @@ import java.util.Arrays;
 import Saboteur.SaboteurBoardState;
 import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
+import Saboteur.cardClasses.SaboteurBonus;
 import Saboteur.cardClasses.SaboteurCard;
+import Saboteur.cardClasses.SaboteurMalus;
 import Saboteur.cardClasses.SaboteurTile;
 import boardgame.BoardState;
 import boardgame.Move;
@@ -205,13 +207,34 @@ public class MyTools {
 	}
 	
 	/**
+	 * method getCardFromHand()
+	 * @param SaboteurCard card
+	 * @return SaboteurCard card
+	 */
+	public static SaboteurCard getCardFromHand(SaboteurBoardState boardState, SaboteurCard card) {
+		ArrayList<SaboteurCard> cards = getCardsInHand(boardState);
+		for(SaboteurCard saboteurCard: cards) {
+			if(saboteurCard.getName().equals(card.getName())) {
+				return saboteurCard;
+			}
+		}
+		return null;
+	} 
+	
+	/**
 	 * method checkCardInHand()
 	 * used to check if a specific card is in our hand and can therefore be played
 	 * @param SaboteurCard card 
 	 * @return boolean: true if Card in agent's hand/ false otherwise
 	 */
 	public static boolean checkCardInHand(ArrayList<SaboteurCard> cards, SaboteurCard card) {
-		return cards.contains(card);
+//		return cards.contains(card);
+		for(SaboteurCard saboteurCard : cards) {
+			if(saboteurCard.getName().equals(card.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -220,13 +243,25 @@ public class MyTools {
 	 */
 	
 	public static Move playMalus(SaboteurBoardState boardState) {
-		
+		if(checkCardInHand(getCardsInHand(boardState), new SaboteurMalus())) {
+			int playerId = boardState.getTurnPlayer();
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMalus()), 0, 0, playerId);
+			return myMove;
+			
+		}else {
 		return null;
+		}
 	}
 	
 	public static Move playBonus(SaboteurBoardState boardState) {
-		
-		return null;
+		int playerId = boardState.getTurnPlayer();
+		int mallusStatus = boardState.getNbMalus(playerId);
+		if(checkCardInHand(getCardsInHand(boardState), new SaboteurBonus()) && mallusStatus == 0) {
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMalus()), 0, 0, playerId);
+			return myMove;
+		}else {
+			return null;
+		}
 	}
 	
 	public static Move preventOpponentFromWinning(SaboteurBoardState boardState) {
@@ -241,7 +276,8 @@ public class MyTools {
 	}
 	
 	public static Move tacticalDrop(SaboteurBoardState boardState) {
-		//if 2 cards away from an objective drop instead of putting a path card
+		//if 2 cards away from the closest objective or objective that we are
+		//are going for, drop instead of putting a path card
 		return null;
 	}
 	
