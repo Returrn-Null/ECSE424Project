@@ -48,80 +48,80 @@ public class MyTools {
 	 * @param sbs
 	 * @return number of moves.
 	 */
-	public static int[] getNumMovesToObjective(ArrayList<int[]> targets, SaboteurBoardState sbs) {
-		int[] numMoves = new int[3];
-		int min0 = 80;
-		int min1 = 80;
-		int min2 = 80;
-		int mini = 80;
-		int minj = 80;
+	//	public static int[] getNumMovesToObjective(ArrayList<int[]> targets, SaboteurBoardState sbs) {
+	//		int[] numMoves = new int[3];
+	//		int min0 = 80;
+	//		int min1 = 80;
+	//		int min2 = 80;
+	//		int mini = 80;
+	//		int minj = 80;
+	//
+	//		for(int i = 12; i>=0;i--) {
+	//			for(int j = 12; j>=0; j--) {
+	//				if(board[i][j] != null && pathExists(i,j)) {//if there is a card on the current position and path from spawn
+	//					for(int a = 0;a<3;a++) {
+	//						if(targets.get(a) == null) {
+	//							continue;
+	//						}
+	//						//						if(a == 0) {
+	//						//							int[] off = getOffset(targets.get(0),i,j);
+	//						//							if(min0>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+	//						//								min0 = Math.abs(off[0])+Math.abs(off[1])+off[2];
+	//						//							}	
+	//						//						}
+	//						if(a == 1) {
+	//							int[] off = getOffset(targets.get(1),i,j);
+	//							if(min1>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+	//								min1 = Math.abs(off[0])+Math.abs(off[1])+off[2];
+	//								mini = i;
+	//								minj = j;
+	//								prevClosest = board[i][j];
+	//							}
+	//						}
+	//						//						if(a == 2) {
+	//						//							int[] off = getOffset(targets.get(2),i,j);
+	//						//							if(min2>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+	//						//								min2 = Math.abs(off[0])+Math.abs(off[1])+off[2];
+	//						//							}
+	//						//						}
+	//					}
+	//				}
+	//				if(min1>PrevMin1) {//if a destroy card was used add one to the cost
+	//					min1 = PrevMin1+1;
+	//				}
+	//				if(min0>PrevMin0) {
+	//					min0 = PrevMin0+1;
+	//				}
+	//				if(min2>PrevMin2) {
+	//					min2 = PrevMin2+1;
+	//				}
+	//			}
+	//		}
+	//		numMoves[0] = min0;
+	//		numMoves[1] = min1;
+	//		numMoves[2] = min2;
+	//		return numMoves;
+	//
+	//	}
 
-		for(int i = 12; i>=0;i--) {
-			for(int j = 12; j>=0; j--) {
-				if(board[i][j] != null && pathExists(i,j)) {//if there is a card on the current position and path from spawn
-					for(int a = 0;a<3;a++) {
-						if(targets.get(a) == null) {
-							continue;
-						}
-						//						if(a == 0) {
-						//							int[] off = getOffset(targets.get(0),i,j);
-						//							if(min0>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
-						//								min0 = Math.abs(off[0])+Math.abs(off[1])+off[2];
-						//							}	
-						//						}
-						if(a == 1) {
-							int[] off = getOffset(targets.get(1),i,j);
-							if(min1>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
-								min1 = Math.abs(off[0])+Math.abs(off[1])+off[2];
-								mini = i;
-								minj = j;
-								prevClosest = board[i][j];
-							}
-						}
-						//						if(a == 2) {
-						//							int[] off = getOffset(targets.get(2),i,j);
-						//							if(min2>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
-						//								min2 = Math.abs(off[0])+Math.abs(off[1])+off[2];
-						//							}
-						//						}
-					}
-				}
-				if(min1>PrevMin1) {//if a destroy card was used add one to the cost
-					min1 = PrevMin1+1;
-				}
-				if(min0>PrevMin0) {
-					min0 = PrevMin0+1;
-				}
-				if(min2>PrevMin2) {
-					min2 = PrevMin2+1;
-				}
-			}
-		}
-		numMoves[0] = min0;
-		numMoves[1] = min1;
-		numMoves[2] = min2;
-		return numMoves;
-
-	}
-
-	public static int checkNumMoves(SaboteurBoardState sbs) {
-
-		int min1 = 80;
-		int[] target = {12,5};
-		for(int i = 12; i>=0;i--) {
-			for(int j = 12; j>=0; j--) {
-				if(board[i][j]!= null && pathExists(i,j)) {
-					int[] off = getOffset(target,i,j);
-					if(min1>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
-						min1 = Math.abs(off[0])+Math.abs(off[1])+off[2];
-					}
-				}
-				//TODO case where distroy and no pathh exists (other if)
-			}
-		}
-		return min1;
-
-	}
+	//	public static int checkNumMoves(SaboteurBoardState sbs) {
+	//
+	//		int min1 = 80;
+	//		int[] target = {12,5};
+	//		for(int i = 12; i>=0;i--) {
+	//			for(int j = 12; j>=0; j--) {
+	//				if(board[i][j]!= null && pathExists(i,j)) {
+	//					int[] off = getOffset(target,i,j);
+	//					if(min1>Math.abs(off[0])+Math.abs(off[1])+off[2]) {
+	//						min1 = Math.abs(off[0])+Math.abs(off[1])+off[2];
+	//					}
+	//				}
+	//				//TODO case where distroy and no pathh exists (other if)
+	//			}
+	//		}
+	//		return min1;
+	//
+	//	}
 
 	/**
 	 * This method can be used to determine how much tiles horizontally and vertically are needed to reach the target
@@ -129,11 +129,12 @@ public class MyTools {
 	 * @param current
 	 * @return
 	 */
-	public static int[] getOffset(int[] target, int i, int j) {
+	public static int[] getOffset(int[] target, int i, int j, String name) {
+		String idx = name.split(":")[1];
 		int[] offsets = new int[3];
 		offsets[0] = target[0]-i;
 		offsets[1] = target[1]-j;
-		int[][] path = board[i][j].getPath();
+		int[][] path = SaboteurTile.initializePath(idx);
 		if(offsets[0]>0 && path[1][0] == 1 && path[1][1]==1) {
 			offsets[2] = 0;
 			offsets[0]--;
@@ -164,7 +165,12 @@ public class MyTools {
 	 * @return
 	 */
 	public static boolean pathExists(int i, int j) {
-
+		if(board[i][j] == null) {
+			return false;
+		}
+		if(i == 5 && j == 5) {
+			return true;
+		}
 		ArrayList<int[]> originTargets = new ArrayList<>();
 		originTargets.add(new int[]{5,5}); 
 		int[] target = {i, j};
@@ -517,54 +523,75 @@ public class MyTools {
 	 * @param boardState
 	 * @return
 	 */
-	public static Move tacticalDrop(SaboteurBoardState boardState) {
-		//if 2 cards away from the closest objective or objective that we are
-		//are going for, drop instead of putting a path card
-		
-		//check mallus status of opponent
-		int playerId = boardState.getTurnPlayer();
-		int mallusStatus = boardState.getNbMalus((playerId+1)%2);
-		
-		SaboteurCard cardDrop;
-		if(checkNumMoves(boardState) == 2 && board[12][5].getName() == null && mallusStatus == 0) {
-			cardDrop = dropStrategy(boardState);
-			if(cardDrop!=null) {
-				SaboteurMove move = new SaboteurMove(cardDrop,0,0,boardState.getTurnPlayer());
-				return move;
-			}
-			else return null;
-
-		}
-		else return null;
-
-	}
+	//	public static Move tacticalDrop(SaboteurBoardState boardState) {
+	//		//if 2 cards away from the closest objective or objective that we are
+	//		//are going for, drop instead of putting a path card
+	//		
+	//		//check mallus status of opponent
+	//		int playerId = boardState.getTurnPlayer();
+	//		int mallusStatus = boardState.getNbMalus((playerId+1)%2);
+	//		
+	//		SaboteurCard cardDrop;
+	//		if(checkNumMoves(boardState) == 2 && board[12][5].getName() == null && mallusStatus == 0) {
+	//			cardDrop = dropStrategy(boardState);
+	//			if(cardDrop!=null) {
+	//				SaboteurMove move = new SaboteurMove(cardDrop,0,0,boardState.getTurnPlayer());
+	//				return move;
+	//			}
+	//			else return null;
+	//
+	//		}
+	//		else return null;
+	//
+	//	}
 
 	public static Move buildPath(SaboteurBoardState boardState) {
 		ArrayList<SaboteurMove> tileMoves = allTileMove();
 		SaboteurMove sabMove = null;
 		int min = 80;
+		boolean flag = false;
 		for(SaboteurMove sm : tileMoves) {
-			
-			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
-			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
-			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
+			flag = false;
+			if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
+				flag = false;
+			}
+			else {
+				flag = true;
+			}
+			//			SaboteurTile sb = new SaboteurTile(sm.getCardPlayed().getName());
+			//			if(sb.getPath() == null) {
+			//				throw new IllegalArgumentException("THE NAME: "+sm.getCardPlayed().getName());
+			//			}
+			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int i = middle[0]+middle[1]+middle[2];
 			int j =  right[0]+right[1]+right[2];
 			int k = left[0]+left[1]+left[2];
-			if(i<= min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
-				min = i;
-				sabMove = sm;
+			if(i<= min ) {
+				if(flag){
+					min = i;
+					sabMove = sm;
+				}
+
 			}
-			if(j<=min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
-				min = j;
-				sabMove = sm;
+			if(j<=min ) {
+				if(flag){					
+					min = j;
+					sabMove = sm;
+				}
 			}
-			if(k<=min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
-				min = k;
-				sabMove = sm;
+			if(k<=min) {
+				if(flag){
+					min = k;
+					sabMove = sm;
+				}
+
 			}
+			//&& pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])
 			//if get offset returns 1 at index 2 and no destroy card then don t consider
 		}
+
 		return sabMove;
 	}
 
@@ -586,6 +613,23 @@ public class MyTools {
 			else continue;
 		}
 		return tileMoves;
+	}
+	public static boolean checkpathN(int i,int j) {
+		if(pathExists(i+1, j) == true) {
+			return true;
+		}
+		if(pathExists(i, j+1) == true) {
+			return true;
+		}
+		if(pathExists(i-1, j) == true) {
+			return true;
+		}
+		if(pathExists(i, j-1) == true) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
