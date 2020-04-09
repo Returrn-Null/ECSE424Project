@@ -387,13 +387,16 @@ public class MyTools {
 		int hiddenObjectiveIndex = (int)((Math.random() * 3) /1);
 		SaboteurTile[][] tiles = boardState.getHiddenBoard();
 		int [][] objectivePos = SaboteurBoardState.hiddenPos;
-		while( tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("hidden1") || 
-			   tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("hidden2") ||
-			   tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("nugget")) {
-			hiddenObjectiveIndex = (hiddenObjectiveIndex + 1) %3;
+		while(true) {
+			if(tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName()!= null) {
+				hiddenObjectiveIndex = (hiddenObjectiveIndex + 1) %3;
+			}
+			else {
+				return hiddenObjectiveIndex;
+			}
 		}
-		return hiddenObjectiveIndex;
 	}	
+	
 	
 	/**
 	 * METHODS FOR SELECTING MOVES IN ORDER OF PRIORITY
