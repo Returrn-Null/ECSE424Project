@@ -2,6 +2,7 @@ package student_player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import Saboteur.SaboteurBoardState;
 import Saboteur.SaboteurBoardPanel;
@@ -20,6 +21,7 @@ public class MyTools {
 	private static int PrevMin1;
 	private static int PrevMin2;
 	private static int PrevMin0;
+	private static int MalusNum = 2;
 
 	public static double getSomething() {
 		return Math.random();
@@ -221,19 +223,67 @@ public class MyTools {
 	}
 	
 
-	public static void dropStrategy(SaboteurBoardState sbs) {
+	public static SaboteurCard dropStrategy(SaboteurBoardState sbs) {
 		ArrayList<SaboteurCard> hand = sbs.getCurrentPlayerCards();
 		boolean map = false;
 		boolean bonus = false;
 		if(checkRevealed(sbs)>=2) {
 			map = true;
 		}
-		for(SaboteurCard ca: hand) {
-			
+		if(MalusNum-CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:malus") == 0) {
+			bonus = true;
 		}
 		
-		
-		
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:map")!=0 && map) {
+				return getIndexCardinHand(hand,"Title:map");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:bonus")!=0 && bonus) {
+				return getIndexCardinHand(hand,"Title:bonus");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:12")!= 0) {
+				return getIndexCardinHand(hand,"Title:12");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:13")!= 0) {
+				return getIndexCardinHand(hand,"Title:13");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:14")!= 0) {
+				return getIndexCardinHand(hand,"Title:14");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:15")!= 0) {
+				return getIndexCardinHand(hand,"Title:15");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:2")!= 0) {
+				return getIndexCardinHand(hand,"Title:2");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:3")!= 0) {
+				return getIndexCardinHand(hand,"Title:3");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:11")!= 0) {
+				return getIndexCardinHand(hand,"Title:11");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:4")!= 0) {
+				return getIndexCardinHand(hand,"Title:4");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:7")!= 0) {
+				return getIndexCardinHand(hand,"Title:7");
+			}
+			if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:destroy")!= 0) {
+				return getIndexCardinHand(hand,"Title:destroy");
+			}
+			else {
+				Random rand = new Random();
+				int random = rand.nextInt(8);//generate an int between 0 and 7.
+				return hand.get(random);
+			}
+	}
+	
+	public static SaboteurCard getIndexCardinHand(ArrayList<SaboteurCard> s, String title) {
+		for(SaboteurCard e :s) {
+			if(e.getName().equals(title)) {
+				return e; 
+			}
+		}
+		return null;
 	}
 	
 	
@@ -253,6 +303,15 @@ public class MyTools {
 		return num;
 	}
 	
+	public static int CheckNumOfCardInHand(ArrayList<SaboteurCard>ss, String title) {
+		int num = 0;
+		for(SaboteurCard sc: ss) {
+			if(sc.getName().equals(title)) {
+				num++;
+			}
+		}
+		return num; //TODO: don t forget to decrement malusNum global var when sending or receiving malus
+	}
 	
 	
 	
