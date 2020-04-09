@@ -7,7 +7,10 @@ import java.util.Random;
 import Saboteur.SaboteurBoardState;
 import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
+import Saboteur.cardClasses.SaboteurBonus;
 import Saboteur.cardClasses.SaboteurCard;
+import Saboteur.cardClasses.SaboteurMalus;
+import Saboteur.cardClasses.SaboteurMap;
 import Saboteur.cardClasses.SaboteurTile;
 import boardgame.BoardState;
 import boardgame.Move;
@@ -331,15 +334,66 @@ public class MyTools {
 	}
 	
 	/**
+	 * method getCardFromHand()
+	 * @param SaboteurCard card
+	 * @return SaboteurCard card
+	 */
+	public static SaboteurCard getCardFromHand(SaboteurBoardState boardState, SaboteurCard card) {
+		ArrayList<SaboteurCard> cards = getCardsInHand(boardState);
+		for(SaboteurCard saboteurCard: cards) {
+			if(saboteurCard.getName().equals(card.getName())) {
+				return saboteurCard;
+			}
+		}
+		return null;
+	} 
+	
+	/**
 	 * method checkCardInHand()
 	 * used to check if a specific card is in our hand and can therefore be played
 	 * @param SaboteurCard card 
 	 * @return boolean: true if Card in agent's hand/ false otherwise
 	 */
 	public static boolean checkCardInHand(ArrayList<SaboteurCard> cards, SaboteurCard card) {
-		return cards.contains(card);
+//		return cards.contains(card);
+		for(SaboteurCard saboteurCard : cards) {
+			if(saboteurCard.getName().equals(card.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
+	/**
+	 * method countRevealedObjectives
+	 * @param boardState
+	 * @return number of revealed objectives
+	 */
+	public static int countRevealedObjectives(SaboteurBoardState boardState) {
+		SaboteurTile[][] tiles = boardState.getHiddenBoard();
+		int [][] objectivePos = SaboteurBoardState.hiddenPos;
+		int discoveredObjectivesCounter = 0;
+		for(int i = 0; i < 3; i++) {
+			if(tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("hidden1") || 
+					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("hidden2") ||
+					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("nugget")) {
+				discoveredObjectivesCounter++;
+			}
+		}
+		return discoveredObjectivesCounter;
+	}
+	
+	public static int selectHiddenObjectiveToUncover(SaboteurBoardState boardState) {
+		int hiddenObjectiveIndex = (int)((Math.random() * 3) /1);
+		SaboteurTile[][] tiles = boardState.getHiddenBoard();
+		int [][] objectivePos = SaboteurBoardState.hiddenPos;
+		while( tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("hidden1") || 
+			   tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("hidden2") ||
+			   tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName().equals("nugget")) {
+			hiddenObjectiveIndex = (hiddenObjectiveIndex + 1) %3;
+		}
+		return hiddenObjectiveIndex;
+	}	
 	
 	/**
 	 * METHODS FOR SELECTING MOVES IN ORDER OF PRIORITY
@@ -347,13 +401,32 @@ public class MyTools {
 	 */
 	
 	public static Move playMalus(SaboteurBoardState boardState) {
-		
+		if(checkCardInHand(getCardsInHand(boardState), new SaboteurMalus())) {
+			int playerId = boardState.getTurnPlayer();
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMalus()), 0, 0, playerId);
+			if(boardState.isLegal(myMove)) {
+				return myMove;
+			}else {
+				return null;
+			}
+		}else {
 		return null;
+		}
 	}
 	
 	public static Move playBonus(SaboteurBoardState boardState) {
-		
-		return null;
+		int playerId = boardState.getTurnPlayer();
+		int mallusStatus = boardState.getNbMalus(playerId);
+		if(checkCardInHand(getCardsInHand(boardState), new SaboteurBonus()) && mallusStatus == 0) {
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMalus()), 0, 0, playerId);
+			if(boardState.isLegal(myMove)) {
+				return myMove;
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
 	}
 	
 	public static Move preventOpponentFromWinning(SaboteurBoardState boardState) {
@@ -363,12 +436,33 @@ public class MyTools {
 	}
 	
 	public static Move playMapCard(SaboteurBoardState boardState) {
+		int playerId = boardState.getTurnPlayer();
+		int discoveredObjectivesCounter = countRevealedObjectives(boardState);
 		
-		return null;
+		if(discoveredObjectivesCounter > 1) {
+			//means 2 or more objectives have been revealed,
+			//we know where the nugget is, no need to play anymore Map cards
+			return null;
+		}
+		//else need to choose which hidden objective to discover
+		int hiddenObjectiveIndex = selectHiddenObjectiveToUncover(boardState);
+		if(checkCardInHand(getCardsInHand(boardState), new SaboteurMap())){
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMap()), 
+					SaboteurBoardState.hiddenPos[hiddenObjectiveIndex][0],
+					SaboteurBoardState.hiddenPos[hiddenObjectiveIndex][1], playerId);
+			if(boardState.isLegal(myMove)) {
+				return myMove;
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
 	}
 	
 	public static Move tacticalDrop(SaboteurBoardState boardState) {
-		//if 2 cards away from an objective drop instead of putting a path card
+		//if 2 cards away from the closest objective or objective that we are
+		//are going for, drop instead of putting a path card
 		return null;
 	}
 	
