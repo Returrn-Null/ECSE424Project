@@ -33,33 +33,40 @@ public class StudentPlayer extends SaboteurPlayer {
     	
     	//then start selecting moves by going through the strategy 
     	
-        if(MyTools.playMalus(boardState) != null) {
-        	myMove = MyTools.playMalus(boardState);
-        }
-        
-        else if(MyTools.playBonus(boardState) != null) {
-        	myMove = MyTools.playBonus(boardState);
-        }
-        
-        else if(MyTools.preventOpponentFromWinning(boardState) != null) {
-        	myMove = MyTools.preventOpponentFromWinning(boardState);
-        }
-        
-        else if(MyTools.playMapCard(boardState) != null) {
-        	myMove = MyTools.playMapCard(boardState);
-        }
-        
-        else if(MyTools.tacticalDrop(boardState) != null) {
-        	myMove = MyTools.tacticalDrop(boardState);
-        }
-        
-        else if(MyTools.buildPath(boardState) != null) {
+//        if(MyTools.playMalus(boardState) != null) {
+//        	myMove = MyTools.playMalus(boardState);
+//        	return myMove;
+//        }
+//        
+//        if(MyTools.playBonus(boardState) != null) {
+//        	myMove = MyTools.playBonus(boardState);
+//        	return myMove;
+//        }
+//        
+//        if(MyTools.preventOpponentFromWinning(boardState) != null) {
+//        	myMove = MyTools.preventOpponentFromWinning(boardState);
+//        	return myMove;
+//        }
+//        
+//        if(MyTools.playMapCard(boardState) != null) {
+//        	myMove = MyTools.playMapCard(boardState);
+//        	return myMove;
+//        }
+//        
+//        if(MyTools.tacticalDrop(boardState) != null) {
+//        	myMove = MyTools.tacticalDrop(boardState);
+//        	return myMove;
+//        }
+        System.out.println("RESULT: " + (MyTools.buildPath(boardState)).getPlayerID());
+        if(MyTools.buildPath(boardState) != null) {
         	myMove = MyTools.buildPath(boardState);
+        	return myMove;
         }
         
-        else if(MyTools.Drop(boardState) != null) {
-        	myMove = MyTools.Drop(boardState);
-        }
+//        if(MyTools.Drop(boardState) != null) {
+//        	myMove = MyTools.Drop(boardState);
+//        	return myMove;
+//        }
         else {
         // Is random the best you can do?
         myMove = boardState.getRandomMove();

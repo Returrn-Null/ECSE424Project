@@ -520,8 +520,13 @@ public class MyTools {
 	public static Move tacticalDrop(SaboteurBoardState boardState) {
 		//if 2 cards away from the closest objective or objective that we are
 		//are going for, drop instead of putting a path card
+		
+		//check mallus status of opponent
+		int playerId = boardState.getTurnPlayer();
+		int mallusStatus = boardState.getNbMalus((playerId+1)%2);
+		
 		SaboteurCard cardDrop;
-		if(checkNumMoves(boardState) == 2 && board[12][5].getName() == null ) {
+		if(checkNumMoves(boardState) == 2 && board[12][5].getName() == null && mallusStatus == 0) {
 			cardDrop = dropStrategy(boardState);
 			if(cardDrop!=null) {
 				SaboteurMove move = new SaboteurMove(cardDrop,0,0,boardState.getTurnPlayer());
@@ -538,23 +543,23 @@ public class MyTools {
 		ArrayList<SaboteurMove> tileMoves = allTileMove();
 		SaboteurMove sabMove = null;
 		int min = 80;
-
 		for(SaboteurMove sm : tileMoves) {
+			
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
 			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
 			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1]);
 			int i = middle[0]+middle[1]+middle[2];
 			int j =  right[0]+right[1]+right[2];
 			int k = left[0]+left[1]+left[2];
-			if(i<= min) {
+			if(i<= min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 				min = i;
 				sabMove = sm;
 			}
-			if(j<=min) {
+			if(j<=min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 				min = j;
 				sabMove = sm;
 			}
-			if(k<=min) {
+			if(k<=min && pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 				min = k;
 				sabMove = sm;
 			}
