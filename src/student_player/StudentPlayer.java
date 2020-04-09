@@ -28,6 +28,11 @@ public class StudentPlayer extends SaboteurPlayer {
         // strategies...
     	Move myMove;
     	
+    	//first update board with current board state
+    	MyTools.updateBoard(boardState);
+    	
+    	//then start selecting moves by going through the strategy 
+    	
         if(MyTools.playMalus(boardState) != null) {
         	myMove = MyTools.playMalus(boardState);
         }

@@ -409,13 +409,13 @@ public class MyTools {
 	 * @return number of revealed objectives
 	 */
 	public static int countRevealedObjectives(SaboteurBoardState boardState) {
-		SaboteurTile[][] tiles = boardState.getHiddenBoard();
+		SaboteurTile[][] tiles = board;
 		int [][] objectivePos = SaboteurBoardState.hiddenPos;
 		int discoveredObjectivesCounter = 0;
 		for(int i = 0; i < 3; i++) {
-			if(tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("hidden1") || 
-					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("hidden2") ||
-					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("nugget")) {
+			if(tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("Title:hidden1") || 
+					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("Title:hidden2") ||
+					tiles[objectivePos[i][0]][objectivePos[i][1]].getName().equals("Title:nugget")) {
 				discoveredObjectivesCounter++;
 			}
 		}
@@ -423,15 +423,16 @@ public class MyTools {
 	}
 
 	public static int selectHiddenObjectiveToUncover(SaboteurBoardState boardState) {
-		int hiddenObjectiveIndex = (int)((Math.random() * 3) /1);
-		SaboteurTile[][] tiles = boardState.getHiddenBoard();
+		Random rand = new Random();
+		int random = rand.nextInt(3); //returns a random int between 0 and 2
+		SaboteurTile[][] tiles = board;
 		int [][] objectivePos = SaboteurBoardState.hiddenPos;
 		while(true) {
-			if(tiles[objectivePos[hiddenObjectiveIndex][0]][objectivePos[hiddenObjectiveIndex][1]].getName()!= null) {
-				hiddenObjectiveIndex = (hiddenObjectiveIndex + 1) %3;
+			if(tiles[objectivePos[random][0]][objectivePos[random][1]].getName()!= null) {
+				random = (random + 1) %3;
 			}
 			else {
-				return hiddenObjectiveIndex;
+				return random;
 			}
 		}
 	}	
@@ -520,7 +521,7 @@ public class MyTools {
 		//if 2 cards away from the closest objective or objective that we are
 		//are going for, drop instead of putting a path card
 		SaboteurCard cardDrop;
-		if(checkNumMoves(boardState) == 2 && board[12][5].getName == null ) {
+		if(checkNumMoves(boardState) == 2 && board[12][5].getName() == null ) {
 			cardDrop = dropStrategy(boardState);
 			if(cardDrop!=null) {
 				SaboteurMove move = new SaboteurMove(cardDrop,0,0,boardState.getTurnPlayer());
@@ -535,7 +536,7 @@ public class MyTools {
 
 	public static Move buildPath(SaboteurBoardState boardState) {
 		ArrayList<SaboteurMove> tileMoves = allTileMove();
-		SaboteurMove sabMove;
+		SaboteurMove sabMove = null;
 		int min = 80;
 
 		for(SaboteurMove sm : tileMoves) {
@@ -559,9 +560,7 @@ public class MyTools {
 			}
 			//if get offset returns 1 at index 2 and no destroy card then don t consider
 		}
-
-
-		return null;
+		return sabMove;
 	}
 
 	public static Move Drop(SaboteurBoardState boardState) {
