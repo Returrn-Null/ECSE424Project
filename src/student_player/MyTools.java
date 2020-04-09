@@ -297,10 +297,10 @@ public class MyTools {
 		if(board[12][5].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
 			num++;
 		}
-		if(board[12][3].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
+		if(board[12][3].getName().equals("Title:hidden1") ||board[12][3].getName().equals("Title:hidden2")|| board[12][3].getName().equals("Title:nugget")) {
 			num++;
 		}
-		if(board[12][7].getName().equals("Title:hidden1") ||board[12][5].getName().equals("Title:hidden2")|| board[12][5].getName().equals("Title:nugget")) {
+		if(board[12][7].getName().equals("Title:hidden1") ||board[12][7].getName().equals("Title:hidden2")|| board[12][7].getName().equals("Title:nugget")) {
 			num++;
 		}
 		return num;
