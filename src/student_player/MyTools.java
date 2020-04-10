@@ -602,13 +602,11 @@ public class MyTools {
 		ArrayList<SaboteurMove> middleM = checkBest(tileMoves, "middle");
 		ArrayList<SaboteurMove> rightM = checkBest(tileMoves, "right");
 		ArrayList<SaboteurMove> leftM = checkBest(tileMoves, "left");
-		if(middleM.size() == 0 && rightM.size() == 0 && leftM.size() == 0) {
-			buildPath(boardState);
-		}
+		
 		for(SaboteurMove sm :middleM) {
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int i = middle[0]+middle[1]+middle[2];
-			if(i<= min && !pathExists(12,5)) {
+			if(i<= min && !pathExists(12,5) && middle[2] != 1) {
 				if(flag){
 					if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 						flag = false;
@@ -625,7 +623,7 @@ public class MyTools {
 		for(SaboteurMove sm: rightM) {
 			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int j =  right[0]+right[1]+right[2];
-			if(j<=min && !pathExists(12,7)) {
+			if(j<=min && !pathExists(12,7) && right[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -641,7 +639,7 @@ public class MyTools {
 		for(SaboteurMove sm: leftM) {
 			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int k = left[0]+left[1]+left[2];
-			if(k<=min && !pathExists(12,3)) {
+			if(k<=min && !pathExists(12,3) && left[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -654,6 +652,9 @@ public class MyTools {
 				}
 
 			}
+		}
+		if(sabMove == null) {
+			buildPath(boardState);
 		}
 		
 //		for(SaboteurMove sm : good) {
