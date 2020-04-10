@@ -218,7 +218,7 @@ public class SaboteurBoardPanel extends BoardPanel implements MouseListener, Mou
 
         flipState = false;
 
-        Scale = 1.5;
+        Scale = 1.8;
 
     }
 

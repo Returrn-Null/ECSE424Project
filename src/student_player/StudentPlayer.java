@@ -57,9 +57,8 @@ public class StudentPlayer extends SaboteurPlayer {
 //        	myMove = MyTools.tacticalDrop(boardState);
 //        	return myMove;
 //        }
-        System.out.println("RESULT: " + (MyTools.buildPath(boardState)).getPlayerID());
-        if(MyTools.buildPath(boardState) != null) {
-        	myMove = MyTools.buildPath(boardState);
+        if(MyTools.buildPath2(boardState) != null) {
+        	myMove = MyTools.buildPath2(boardState);
         	return myMove;
         }
         
