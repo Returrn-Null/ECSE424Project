@@ -467,7 +467,7 @@ public class MyTools {
 		int playerId = boardState.getTurnPlayer();
 		int mallusStatus = boardState.getNbMalus(playerId);
 		if(checkCardInHand(getCardsInHand(boardState), new SaboteurBonus()) && mallusStatus >0) {
-			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurMalus()), 0, 0, playerId);
+			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurBonus()), 0, 0, playerId);
 			if(boardState.isLegal(myMove)) {
 				return myMove;
 			}else {
@@ -558,30 +558,27 @@ public class MyTools {
 			else {
 				flag = true;
 			}
-			//			SaboteurTile sb = new SaboteurTile(sm.getCardPlayed().getName());
-			//			if(sb.getPath() == null) {
-			//				throw new IllegalArgumentException("THE NAME: "+sm.getCardPlayed().getName());
-			//			}
+			
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int i = middle[0]+middle[1]+middle[2];
 			int j =  right[0]+right[1]+right[2];
 			int k = left[0]+left[1]+left[2];
-			if(i<= min ) {
+			if(i<= min && !pathExists(12,5)) {
 				if(flag){
 					min = i;
 					sabMove = sm;
 				}
 
 			}
-			if(j<=min ) {
+			if(j<=min && !pathExists(12,7)) {
 				if(flag){					
 					min = j;
 					sabMove = sm;
 				}
 			}
-			if(k<=min) {
+			if(k<=min && !pathExists(12,3)) {
 				if(flag){
 					min = k;
 					sabMove = sm;
@@ -615,16 +612,17 @@ public class MyTools {
 		return tileMoves;
 	}
 	public static boolean checkpathN(int i,int j) {
-		if(pathExists(i+1, j) == true) {
+
+		if(i+1 < 14 && pathExists(i+1, j) == true) {
 			return true;
 		}
-		if(pathExists(i, j+1) == true) {
+		if(j+1 < 14 && pathExists(i, j+1) == true) {
 			return true;
 		}
-		if(pathExists(i-1, j) == true) {
+		if(i-1 > 0 && pathExists(i-1, j) == true) {
 			return true;
 		}
-		if(pathExists(i, j-1) == true) {
+		if(j-1 > 0 && pathExists(i, j-1) == true) {
 			return true;
 		}
 		else {

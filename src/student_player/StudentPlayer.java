@@ -33,15 +33,15 @@ public class StudentPlayer extends SaboteurPlayer {
     	
     	//then start selecting moves by going through the strategy 
     	
-//        if(MyTools.playMalus(boardState) != null) {
-//        	myMove = MyTools.playMalus(boardState);
-//        	return myMove;
-//        }
+        if(MyTools.playMalus(boardState) != null) {
+        	myMove = MyTools.playMalus(boardState);
+        	return myMove;
+        }
 //        
-//        if(MyTools.playBonus(boardState) != null) {
-//        	myMove = MyTools.playBonus(boardState);
-//        	return myMove;
-//        }
+        if(MyTools.playBonus(boardState) != null) {
+        	myMove = MyTools.playBonus(boardState);
+        	return myMove;
+        }
 //        
 //        if(MyTools.preventOpponentFromWinning(boardState) != null) {
 //        	myMove = MyTools.preventOpponentFromWinning(boardState);
