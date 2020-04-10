@@ -602,7 +602,9 @@ public class MyTools {
 		ArrayList<SaboteurMove> middleM = checkBest(tileMoves, "middle");
 		ArrayList<SaboteurMove> rightM = checkBest(tileMoves, "right");
 		ArrayList<SaboteurMove> leftM = checkBest(tileMoves, "left");
-		
+		if(middleM.size() == 0 && rightM.size() == 0 && leftM.size() == 0) {
+			buildPath(boardState);
+		}
 		for(SaboteurMove sm :middleM) {
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int i = middle[0]+middle[1]+middle[2];
