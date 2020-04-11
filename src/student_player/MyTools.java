@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import Saboteur.SaboteurBoardState;
-import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
 import Saboteur.cardClasses.SaboteurBonus;
 import Saboteur.cardClasses.SaboteurCard;
@@ -13,9 +12,7 @@ import Saboteur.cardClasses.SaboteurDrop;
 import Saboteur.cardClasses.SaboteurMalus;
 import Saboteur.cardClasses.SaboteurMap;
 import Saboteur.cardClasses.SaboteurTile;
-import boardgame.BoardState;
 import boardgame.Move;
-import Saboteur.SaboteurBoard;
 
 public class MyTools {
 
@@ -335,12 +332,16 @@ public class MyTools {
 		}
 		else {
 			Random rand = new Random();
-			int random = rand.nextInt(7);//generate an int between 0 and 7.
+			int random = rand.nextInt(getNumberOfCardsInHand(sbs));//generate an int between 0 and 7.
 			return hand.get(random);
 		}
 
 	}
-
+	
+	public static int getNumberOfCardsInHand(SaboteurBoardState sbs) {
+		return sbs.getCurrentPlayerCards().size();
+	}
+	
 	public static SaboteurCard getIndexCardinHand(ArrayList<SaboteurCard> s, String title) {
 		for(SaboteurCard e :s) {
 			if(e.getName().equals(title)) {
