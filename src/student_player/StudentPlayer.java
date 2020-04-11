@@ -69,6 +69,9 @@ public class StudentPlayer extends SaboteurPlayer {
         else {
         // Is random the best you can do?
         myMove = boardState.getRandomMove();
+        if(myMove != null) {
+        	throw new IllegalArgumentException("YAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
         }
         // Return your move to be processed by the server.
         return myMove;

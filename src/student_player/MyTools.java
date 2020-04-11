@@ -9,6 +9,7 @@ import Saboteur.SaboteurBoardPanel;
 import Saboteur.SaboteurMove;
 import Saboteur.cardClasses.SaboteurBonus;
 import Saboteur.cardClasses.SaboteurCard;
+import Saboteur.cardClasses.SaboteurDrop;
 import Saboteur.cardClasses.SaboteurMalus;
 import Saboteur.cardClasses.SaboteurMap;
 import Saboteur.cardClasses.SaboteurTile;
@@ -41,6 +42,7 @@ public class MyTools {
 		board = sbs.getHiddenBoard();
 		intboard = sbs.getHiddenIntBoard();
 		legalMoves = sbs.getAllLegalMoves();
+		
 	}
 
 
@@ -269,7 +271,18 @@ public class MyTools {
 			}
 		}
 	}
-
+	
+	public static int  getIndex(SaboteurBoardState sbs, SaboteurCard title) {
+		int i = 0;
+		ArrayList<SaboteurCard> s = getCardsInHand(sbs);
+		for(SaboteurCard e :s) {
+			if(e.getName().equals(title.getName())) {
+				return i; 
+			}
+			i++;
+		}
+		return -1;
+	}
 
 	public static SaboteurCard dropStrategy(SaboteurBoardState sbs) {
 		ArrayList<SaboteurCard> hand = sbs.getCurrentPlayerCards();
@@ -281,12 +294,14 @@ public class MyTools {
 		if(MalusNum-CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:malus") == 0) {
 			bonus = true;
 		}
-
 		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:map")!=0 && map) {
 			return getIndexCardinHand(hand,"Title:map");
 		}
 		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:bonus")!=0 && bonus) {
 			return getIndexCardinHand(hand,"Title:bonus");
+		}
+		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:4")!= 0) {
+			return getIndexCardinHand(hand,"Title:4");
 		}
 		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:12")!= 0) {
 			return getIndexCardinHand(hand,"Title:12");
@@ -309,18 +324,18 @@ public class MyTools {
 		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:11")!= 0) {
 			return getIndexCardinHand(hand,"Title:11");
 		}
-		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:4")!= 0) {
-			return getIndexCardinHand(hand,"Title:4");
+		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:destroy")!= 0) {
+			return getIndexCardinHand(hand,"Title:destroy");
 		}
 		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:7")!= 0) {
 			return getIndexCardinHand(hand,"Title:7");
 		}
-		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:destroy")!= 0) {
-			return getIndexCardinHand(hand,"Title:destroy");
+		if(CheckNumOfCardInHand(sbs.getCurrentPlayerCards(),"Title:5")!= 0) {
+			return getIndexCardinHand(hand,"Title:5");
 		}
 		else {
 			Random rand = new Random();
-			int random = rand.nextInt(8);//generate an int between 0 and 7.
+			int random = rand.nextInt(7);//generate an int between 0 and 7.
 			return hand.get(random);
 		}
 
@@ -466,10 +481,12 @@ public class MyTools {
 
 	public static Move playBonus(SaboteurBoardState boardState) {
 		int playerId = boardState.getTurnPlayer();
+		
 		int mallusStatus = boardState.getNbMalus(playerId);
 		if(checkCardInHand(getCardsInHand(boardState), new SaboteurBonus()) && mallusStatus >0) {
 			SaboteurMove myMove = new SaboteurMove(getCardFromHand(boardState, new SaboteurBonus()), 0, 0, playerId);
 			if(boardState.isLegal(myMove)) {
+				MalusNum--;
 				return myMove;
 			}else {
 				return null;
@@ -606,7 +623,7 @@ public class MyTools {
 		for(SaboteurMove sm :middleM) {
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int i = middle[0]+middle[1]+middle[2];
-			if(i<= min && !pathExists(12,5) && middle[2] != 1) {
+			if(i<= min && middle[2] != 1) {
 				if(flag){
 					if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 						flag = false;
@@ -623,7 +640,7 @@ public class MyTools {
 		for(SaboteurMove sm: rightM) {
 			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int j =  right[0]+right[1]+right[2];
-			if(j<=min && !pathExists(12,7) && right[2] != 1) {
+			if(j<=min && right[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -639,7 +656,7 @@ public class MyTools {
 		for(SaboteurMove sm: leftM) {
 			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int k = left[0]+left[1]+left[2];
-			if(k<=min && !pathExists(12,3) && left[2] != 1) {
+			if(k<=min  && left[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -654,7 +671,7 @@ public class MyTools {
 			}
 		}
 		if(sabMove == null) {
-			buildPath(boardState);
+			sabMove = Drop(boardState);
 		}
 		
 //		for(SaboteurMove sm : good) {
@@ -705,10 +722,11 @@ public class MyTools {
 
 
 
-	public static Move Drop(SaboteurBoardState boardState) {
+	public static SaboteurMove Drop(SaboteurBoardState boardState) {
 		SaboteurCard cardDrop = dropStrategy(boardState);
 		if(cardDrop!=null) {
-			SaboteurMove move = new SaboteurMove(cardDrop,0,0,boardState.getTurnPlayer());
+			
+			SaboteurMove move = new SaboteurMove(new SaboteurDrop(),getIndex(boardState,cardDrop),0,boardState.getTurnPlayer());
 			return move;
 		}
 		return null;
