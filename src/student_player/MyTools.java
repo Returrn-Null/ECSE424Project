@@ -29,6 +29,7 @@ public class MyTools {
 	private static final int[] posLeft = {12,3};
 	private static final int[] startPos = {5,5};
 	private static ArrayList<SaboteurMove> legalMoves;
+	private static int mapPlayed = 0;
 
 
 	public static double getSomething() {
@@ -476,11 +477,11 @@ public class MyTools {
 		SaboteurTile[][] tiles = board;
 		int [][] objectivePos = SaboteurBoardState.hiddenPos;
 		while(true) {
-			if(tiles[objectivePos[random][0]][objectivePos[random][1]].getName()!= null) {
-				random = (random + 1) %3;
+			if(tiles[objectivePos[random][0]][objectivePos[random][1]].getName().equals("Tile:8")) {
+				return random;
 			}
 			else {
-				return random;
+				random = (random + 1) %3;
 			}
 		}
 	}	
@@ -540,7 +541,7 @@ public class MyTools {
 
 	public static Move playMapCard(SaboteurBoardState boardState) {
 		int playerId = boardState.getTurnPlayer();
-		int discoveredObjectivesCounter = countRevealedObjectives(boardState);
+		int discoveredObjectivesCounter = checkRevealed(boardState);
 
 		if(discoveredObjectivesCounter > 1) {
 			//means 2 or more objectives have been revealed,
@@ -554,6 +555,7 @@ public class MyTools {
 					SaboteurBoardState.hiddenPos[hiddenObjectiveIndex][0],
 					SaboteurBoardState.hiddenPos[hiddenObjectiveIndex][1], playerId);
 			if(boardState.isLegal(myMove)) {
+				mapPlayed++;
 				return myMove;
 			}else {
 				return null;
@@ -609,6 +611,7 @@ public class MyTools {
 			int i = middle[0]+middle[1]+middle[2];
 			int j =  right[0]+right[1]+right[2];
 			int k = left[0]+left[1]+left[2];
+			
 			if(i<= min && !pathExists(12,5)) {
 				if(flag){
 					min = i;
@@ -632,17 +635,19 @@ public class MyTools {
 			//&& pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])
 			//if get offset returns 1 at index 2 and no destroy card then don t consider
 		}
-
+		
 		return sabMove;
 	}
 
 	public static Move buildPath2(SaboteurBoardState boardState) {
+		if(pathExists(12,5) && pathExists(12,3)) {
+			
+		}
 		if( pathExists(12,5)) {
 			SaboteurMove move = targetLink(12, 5,  boardState);
 			if(move != null) {
 				return move;
 			}
-			//TODO call the manual method
 		}
 		if(pathExists(12,3)) {
 			SaboteurMove move = targetLink(12, 3,  boardState);
@@ -658,7 +663,7 @@ public class MyTools {
 		}
 		ArrayList<SaboteurMove> tileMoves = allTileMove();
 		SaboteurMove sabMove = null;
-		int min = 80;
+		int min = 1000;
 		boolean flag = false;
 
 		ArrayList<SaboteurMove> middleM = checkBest(tileMoves, "middle");
@@ -667,8 +672,13 @@ public class MyTools {
 
 		for(SaboteurMove sm :middleM) {
 			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int j =  right[0]+right[1]+right[2];
+			int k = left[0]+left[1]+left[2];	
 			int i = middle[0]+middle[1]+middle[2];
-			if(i<= min && middle[2] != 1) {
+			int mean = i+j+k;
+			if(mean< min && middle[2] != 1) {
 				if(flag){
 					if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 						flag = false;
@@ -676,16 +686,21 @@ public class MyTools {
 					else {
 						flag = true;
 					}
-					min = i;
+					min = mean;
 					sabMove = sm;
 				}
 
 			}
 		}
 		for(SaboteurMove sm: rightM) {
+			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int j =  right[0]+right[1]+right[2];
-			if(j<=min && right[2] != 1) {
+			int k = left[0]+left[1]+left[2];	
+			int i = middle[0]+middle[1]+middle[2];
+			int mean = i+j+k;
+			if(mean<min && right[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -693,15 +708,20 @@ public class MyTools {
 					flag = true;
 				}
 				if(flag){					
-					min = j;
+					min = mean;
 					sabMove = sm;
 				}
 			}
 		}
 		for(SaboteurMove sm: leftM) {
+			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
+			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
 			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
-			int k = left[0]+left[1]+left[2];
-			if(k<=min  && left[2] != 1) {
+			int j =  right[0]+right[1]+right[2];
+			int k = left[0]+left[1]+left[2];	
+			int i = middle[0]+middle[1]+middle[2];
+			int mean = i+j+k;
+			if(mean<min  && left[2] != 1) {
 				if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 					flag = false;
 				}
@@ -709,58 +729,15 @@ public class MyTools {
 					flag = true;
 				}
 				if(flag){
-					min = k;
+					min = mean;
 					sabMove = sm;
 				}
 
 			}
 		}
-		if(sabMove == null) {
+		if(sabMove == null || sabMove.getPosPlayed()[0] <5) {
 			sabMove = Drop(boardState);
 		}
-
-		//		for(SaboteurMove sm : good) {
-		//			flag = false;
-		//			if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
-		//				flag = false;
-		//			}
-		//			else {
-		//				flag = true;
-		//			}
-		//
-		//			int[] middle  = getOffset(posMiddle,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
-		//			int[] right  = getOffset(posRight,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
-		//			int[] left  = getOffset(posLeft,sm.getPosPlayed()[0],sm.getPosPlayed()[1], sm.getCardPlayed().getName());
-		//			int i = middle[0]+middle[1]+middle[2];
-		//			int j =  right[0]+right[1]+right[2];
-		//			int k = left[0]+left[1]+left[2];
-		//			if(i<= min && !pathExists(12,5)) {
-		//				if(flag){
-		//					min = i;
-		//					sabMove = sm;
-		//				}
-		//
-		//			}
-		//			if(j<=min && !pathExists(12,7)) {
-		//				if(flag){					
-		//					min = j;
-		//					sabMove = sm;
-		//				}
-		//			}
-		//			if(k<=min && !pathExists(12,3)) {
-		//				if(flag){
-		//					min = k;
-		//					sabMove = sm;
-		//				}
-		//
-		//			}
-		//			//&& pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])
-		//			//if get offset returns 1 at index 2 and no destroy card then don t consider
-		//		}
-		//			
-		//			//&& pathExists(sm.getPosPlayed()[0], sm.getPosPlayed()[1])
-		//			//if get offset returns 1 at index 2 and no destroy card then don t consider
-		//		
 		return sabMove;
 	}
 
@@ -978,14 +955,14 @@ public class MyTools {
 
 				if(checkCardInHand(cards, "Tile:8")){
 					SaboteurCard card = getCardFromHand(sbs,"Tile:8");
-					SaboteurMove move = new SaboteurMove(card,12,4,sbs.getTurnPlayer());
+					SaboteurMove move = new SaboteurMove(card,12,6,sbs.getTurnPlayer());
 					if(sbs.isLegal(move)) {
 						return move;
 					}
 				}
 				if(checkCardInHand(cards, "Tile:9") || checkCardInHand(cards, "Tile:9_flip")){
 					SaboteurCard card = getCardFromHand(sbs,"Tile:9");
-					SaboteurMove move = new SaboteurMove(card,12,4,sbs.getTurnPlayer());
+					SaboteurMove move = new SaboteurMove(card,12,6,sbs.getTurnPlayer());
 					if(sbs.isLegal(move)) {
 						return move;
 					}
@@ -993,7 +970,7 @@ public class MyTools {
 						String idx = card.getName().split(":")[1];
 						SaboteurTile tile = new SaboteurTile(idx);
 						tile = tile.getFlipped();
-						move = new SaboteurMove(tile,12,4,sbs.getTurnPlayer());
+						move = new SaboteurMove(tile,12,6,sbs.getTurnPlayer());
 						if(sbs.isLegal(move)) {
 							return move;
 						}
@@ -1001,7 +978,7 @@ public class MyTools {
 				}
 				if(checkCardInHand(cards, "Tile:10")) {
 					SaboteurCard card = getCardFromHand(sbs,"Tile:10");
-					SaboteurMove move = new SaboteurMove(card,12,4,sbs.getTurnPlayer());
+					SaboteurMove move = new SaboteurMove(card,12,6,sbs.getTurnPlayer());
 					if(sbs.isLegal(move)) {
 						return move;
 					}
@@ -1076,7 +1053,50 @@ public class MyTools {
 		}
 		return null;
 	}
-
+	
+	public static int getClosest() {
+		int min = 80;
+		int mini =0;
+		int minj = 0;
+		for(int i = 0; i<14;i++) {
+			for(int j = 0; j<14;j++) {
+				if(board[i][j] != null) {
+					if(i == 12 && j == 5) {
+						continue;
+					}
+					if(i == 12 && j == 7) {
+						continue;
+					}
+					if(i == 12 && j == 3) {
+						continue;
+					}
+					int[] a = getOffset(posMiddle,i,j, board[i][j].getName());
+					int[] b = getOffset(posRight,i,j, board[i][j].getName());
+					int[] c = getOffset(posLeft,i,j, board[i][j].getName());
+					int x = Math.abs(a[0])+ Math.abs(a[1])+ Math.abs(a[2]);
+					int y =  Math.abs(b[0])+ Math.abs(b[1])+ Math.abs(b[2]);
+					int z =  Math.abs(c[0])+ Math.abs(c[1])+ Math.abs(c[2]);
+					if(x<min) {
+						min = x;
+						mini = i;
+						minj = j;
+					}
+					if(y<min) {
+						min = y;
+						mini = i;
+						minj = j;
+					}
+					if(z<min) {
+						min = z;
+						mini = i;
+						minj = j;
+					}
+				}
+			}
+		}
+		
+		return min;
+	}
 
 
 

@@ -47,11 +47,11 @@ public class StudentPlayer extends SaboteurPlayer {
 //        	myMove = MyTools.preventOpponentFromWinning(boardState);
 //        	return myMove;
 //        }
-//        
-//        if(MyTools.playMapCard(boardState) != null) {
-//        	myMove = MyTools.playMapCard(boardState);
-//        	return myMove;
-//        }
+          
+        if(MyTools.getClosest()>2 && MyTools.playMapCard(boardState) != null) {
+        	myMove = MyTools.playMapCard(boardState);
+        	return myMove;
+        }
 //        
 //        if(MyTools.tacticalDrop(boardState) != null) {
 //        	myMove = MyTools.tacticalDrop(boardState);
