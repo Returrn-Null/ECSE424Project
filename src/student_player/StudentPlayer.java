@@ -42,16 +42,20 @@ public class StudentPlayer extends SaboteurPlayer {
         	myMove = MyTools.playBonus(boardState);
         	return myMove;
         }
-//        
+//       
+        if(MyTools.destroy(boardState) != null) {
+        	myMove = MyTools.destroy(boardState);
+        	return myMove;
+        }
 //        if(MyTools.preventOpponentFromWinning(boardState) != null) {
 //        	myMove = MyTools.preventOpponentFromWinning(boardState);
 //        	return myMove;
 //        }
           
-//        if(MyTools.getClosest()>2 && MyTools.playMapCard(boardState) != null) {
-//        	myMove = MyTools.playMapCard(boardState);
-//        	return myMove;
-//        }
+        if(MyTools.getClosest()>2 && MyTools.playMapCard(boardState) != null) {
+        	myMove = MyTools.playMapCard(boardState);
+        	return myMove;
+        }
 //        
 //        if(MyTools.tacticalDrop(boardState) != null) {
 //        	myMove = MyTools.tacticalDrop(boardState);
@@ -63,8 +67,10 @@ public class StudentPlayer extends SaboteurPlayer {
         }
         
         else {
-        // Is random the best you can do?
         myMove = boardState.getRandomMove();    
+        }
+        if(myMove != null) {
+        	throw new IllegalArgumentException("RANDOM MOVE");
         }
         // Return your move to be processed by the server.
         return myMove;

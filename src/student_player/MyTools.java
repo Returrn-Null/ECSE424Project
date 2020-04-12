@@ -8,6 +8,7 @@ import Saboteur.SaboteurBoardState;
 import Saboteur.SaboteurMove;
 import Saboteur.cardClasses.SaboteurBonus;
 import Saboteur.cardClasses.SaboteurCard;
+import Saboteur.cardClasses.SaboteurDestroy;
 import Saboteur.cardClasses.SaboteurDrop;
 import Saboteur.cardClasses.SaboteurMalus;
 import Saboteur.cardClasses.SaboteurMap;
@@ -678,7 +679,7 @@ public class MyTools {
 					int k = Math.abs(left[0])+Math.abs(left[1])+Math.abs(left[2]);	
 					int i = Math.abs(middle[0])+Math.abs(middle[1])+Math.abs(middle[2]);
 					int mean = i+j+k;
-					if(mean< min && middle[2] != 1) {
+					if(mean< min && middle[2] != 1 ) {
 						if(flag){
 							if( !checkpathN(sm.getPosPlayed()[0], sm.getPosPlayed()[1])) {
 								flag = false;
@@ -695,6 +696,11 @@ public class MyTools {
 					if(mean == min ) {
 						if(maxRow < sm.getPosPlayed()[0]) {
 							sabMove = sm;
+						}
+						if(maxRow == sm.getPosPlayed()[0]) {
+							if(!pathExists(12,5)) {
+								sabMove = sm;
+							}
 						}
 					}
 				}
@@ -723,6 +729,11 @@ public class MyTools {
 						if(maxRow < sm.getPosPlayed()[0]) {
 							sabMove = sm;
 						}
+						if(maxRow == sm.getPosPlayed()[0]) {
+							if(!pathExists(12,7)) {
+								sabMove = sm;
+							}
+						}
 					}
 				}
 				for(SaboteurMove sm: leftM) {
@@ -750,6 +761,11 @@ public class MyTools {
 					if(mean == min ) {
 						if(maxRow < sm.getPosPlayed()[0]) {
 							sabMove = sm;
+						}
+						if(maxRow == sm.getPosPlayed()[0]) {
+							if(!pathExists(12,3)) {
+								sabMove = sm;
+							}
 						}
 					}
 				}
@@ -782,20 +798,33 @@ public class MyTools {
 			public static boolean checkpathN(int i,int j) {
 
 				if(i+1 < 14 && pathExists(i+1, j) == true) {
-					return true;
+					SaboteurTile first = board[i+1][j];
+					if(!checkIsBad(first.getName())) {
+						return true;
+					}
+					
+					
 				}
 				if(j+1 < 14 && pathExists(i, j+1) == true) {
-					return true;
+					SaboteurTile first = board[i][j+1];
+					if(!checkIsBad(first.getName())) {
+						return true;
+					}
+					
 				}
 				if(i-1 > 0 && pathExists(i-1, j) == true) {
-					return true;
+					SaboteurTile first = board[i-1][j];
+					if(!checkIsBad(first.getName())) {
+						return true;
+					}
 				}
 				if(j-1 > 0 && pathExists(i, j-1) == true) {
-					return true;
+					SaboteurTile first = board[i][j-1];
+					if(!checkIsBad(first.getName())) {
+						return true;
+					}
 				}
-				else {
 					return false;
-				}
 			}
 
 			/**
@@ -820,7 +849,14 @@ public class MyTools {
 					}
 					String name = e.getCardPlayed().getName();
 					String id = name.split(":")[1];
-					if(id.equals("4")|| id.equals("4_flip")) {
+					if(id.equals("1") || id.equals("2")||
+							id.equals("2_flip")||id.equals("3")||
+							id.equals("3_flip")||id.equals("4_flip")||
+							id.equals("4")||id.equals("11")||
+							id.equals("11_flip")||id.equals("12")||
+							id.equals("12_flip")||id.equals("13")||
+							id.equals("14")||id.equals("14_flip")||
+							id.equals("15")) {
 						continue;
 					}
 					int[][] path = SaboteurTile.initializePath(id);
@@ -1142,7 +1178,7 @@ public class MyTools {
 							return move;
 						}
 					}
-					if(board[12][5].getName().equals("nugget") || !board[12][3].getName().equals("nugget")) {
+					if(board[12][5].getName().equals("Tile:nugget") || !board[12][3].getName().equals("Tile:nugget")) {
 						if(checkCardInHand(cards, "Tile:7")) {
 							SaboteurCard card = getCardFromHand(sbs,"Tile:7");
 							move = new SaboteurMove(card,12,4,sbs.getTurnPlayer());
@@ -1151,7 +1187,7 @@ public class MyTools {
 							}
 						}
 					}
-					if(board[12][3].getName().equals("nugget") || !board[12][5].getName().equals("nugget")) {
+					if(board[12][3].getName().equals("Tile:nugget") || !board[12][5].getName().equals("Tile:nugget")) {
 						if(checkCardInHand(cards, "Tile:5_flip")) {
 							SaboteurCard card = getCardFromHand(sbs,"Tile:5_flip");
 							move = new SaboteurMove(card,12,4,sbs.getTurnPlayer());
@@ -1206,7 +1242,7 @@ public class MyTools {
 							return move;
 						}
 					}
-					if(board[12][5].getName().equals("nugget") || !board[12][7].getName().equals("nugget")) {
+					if(board[12][5].getName().equals("Tile:nugget") || !board[12][7].getName().equals("Tile:nugget")) {
 						if(checkCardInHand(cards, "Tile:5_flip")) {
 							SaboteurCard card = getCardFromHand(sbs,"Tile:5_flip");
 							move = new SaboteurMove(card,12,6,sbs.getTurnPlayer());
@@ -1225,7 +1261,7 @@ public class MyTools {
 							}
 						}
 					}
-					if(board[12][7].getName().equals("nugget") || !board[12][5].getName().equals("nugget")) {
+					if(board[12][7].getName().equals("Tile:nugget") || !board[12][5].getName().equals("Tile:nugget")) {
 
 						if(checkCardInHand(cards, "Tile:7")) {
 							SaboteurCard card = getCardFromHand(sbs,"Tile:7");
@@ -1327,8 +1363,83 @@ public class MyTools {
 				return null;
 			}
 
+			public static SaboteurMove destroy(SaboteurBoardState sbs) {
+				ArrayList<SaboteurCard> cards = sbs.getCurrentPlayerCards();
+				if(!checkCardInHand(cards, "Destroy")) {
+					return null;
+				}
+				int min = 80;
+				int mini =0;
+				int minj = 0;
+				for(int i = 0; i<14;i++) {
+					for(int j = 0; j<14;j++) {
+						if(board[i][j] != null) {
+							if(i == 12 && j == 5) {
+								continue;
+							}
+							if(i == 12 && j == 7) {
+								continue;
+							}
+							if(i == 12 && j == 3) {
+								continue;
+							}
+							int[] a = getOffset(posMiddle,i,j, board[i][j].getName());
+							int[] b = getOffset(posRight,i,j, board[i][j].getName());
+							int[] c = getOffset(posLeft,i,j, board[i][j].getName());
+							int x = Math.abs(a[0])+ Math.abs(a[1])+ Math.abs(a[2]);
+							int y =  Math.abs(b[0])+ Math.abs(b[1])+ Math.abs(b[2]);
+							int z =  Math.abs(c[0])+ Math.abs(c[1])+ Math.abs(c[2]);
+							if(x<min) {
+								min = x;
+								mini = i;
+								minj = j;
+							}
+							if(y<min) {
+								min = y;
+								mini = i;
+								minj = j;
+							}
+							if(z<min) {
+								min = z;
+								mini = i;
+								minj = j;
+							}
+						}
+					}
+				}
+				SaboteurTile st = board[mini][minj];
+				if(st.getName().equals("Tile:1") || st.getName().equals("Tile:2")||
+				st.getName().equals("Tile:2_flip")||st.getName().equals("Tile:3")||
+				st.getName().equals("Tile:3_flip")||st.getName().equals("Tile:4_flip")||
+				st.getName().equals("Tile:4")||st.getName().equals("Tile:11")||
+				st.getName().equals("Tile:11_flip")||st.getName().equals("Tile:12")||
+				st.getName().equals("Tile:12_flip")||st.getName().equals("Tile:13")||
+				st.getName().equals("Tile:14")||st.getName().equals("Tile:14_flip")||
+				st.getName().equals("Tile:15")) {
+					
+					SaboteurMove destroy = new SaboteurMove(getCardFromHand(sbs,new SaboteurDestroy()),mini,minj,sbs.getTurnPlayer());
+					if(!sbs.isLegal(destroy)) {
+						throw new IllegalArgumentException("NOT CREATING MOVE PROPERLY");
+					}
+					return destroy;
+				}
+				
+				return null;
+			}
 
-
-
+			public static boolean checkIsBad(String name) {
+				
+				if(name.equals("Tile:1") || name.equals("Tile:2")||
+						name.equals("Tile:2_flip")||name.equals("Tile:3")||
+						name.equals("Tile:3_flip")||name.equals("Tile:4_flip")||
+						name.equals("Tile:4")||name.equals("Tile:11")||
+						name.equals("Tile:11_flip")||name.equals("Tile:12")||
+						name.equals("Tile:12_flip")||name.equals("Tile:13")||
+						name.equals("Tile:14")||name.equals("Tile:14_flip")||
+						name.equals("Tile:15")) {
+							return true;
+						}
+				return false;
+			}
 
 		}
