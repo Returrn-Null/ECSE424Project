@@ -37,30 +37,25 @@ public class StudentPlayer extends SaboteurPlayer {
         	myMove = MyTools.playMalus(boardState);
         	return myMove;
         }
-//        
+        
         if(MyTools.playBonus(boardState) != null) {
         	myMove = MyTools.playBonus(boardState);
         	return myMove;
         }
-//       
-        if(MyTools.destroy(boardState) != null) {
-        	myMove = MyTools.destroy(boardState);
-        	return myMove;
-        }
-//        if(MyTools.preventOpponentFromWinning(boardState) != null) {
-//        	myMove = MyTools.preventOpponentFromWinning(boardState);
+       
+        //we implemented a destroy logic, but after testing we found that we did better without it
+        
+//        if(MyTools.destroy(boardState) != null) {
+//        	myMove = MyTools.destroy(boardState);
 //        	return myMove;
 //        }
+
           
         if(MyTools.getClosest()>2 && MyTools.playMapCard(boardState) != null) {
         	myMove = MyTools.playMapCard(boardState);
         	return myMove;
         }
-//        
-//        if(MyTools.tacticalDrop(boardState) != null) {
-//        	myMove = MyTools.tacticalDrop(boardState);
-//        	return myMove;
-//        }
+
         if(MyTools.buildPath2(boardState) != null) {
         	myMove = MyTools.buildPath2(boardState);
         	return myMove;
@@ -68,9 +63,6 @@ public class StudentPlayer extends SaboteurPlayer {
         
         else {
         myMove = boardState.getRandomMove();    
-        }
-        if(myMove != null) {
-        	throw new IllegalArgumentException("RANDOM MOVE");
         }
         // Return your move to be processed by the server.
         return myMove;
